@@ -36,7 +36,10 @@ def ft_otp(args):
             with open(args.k, 'rb') as file:
                 encrypted_data = file.read()
                 cipher = Fernet(FERNET_KEY)
-                key = cipher.decrypt(encrypted_data)
+                try:
+                    key = cipher.decrypt(encrypted_data)
+                except Exception as e:
+                    exit(print("Invalid File"))
         except IOError:
             exit(print(f"Could not read file {args.k}"))
 
