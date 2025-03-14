@@ -7,13 +7,15 @@ int main() {
     char user_key[24];
 
     printf("Please enter key: ");
-    scanf("%23s", user_key);
+    if (scanf("%23s", user_key) != 1) {
+        return printf("Nope.\n");
+    }
 
     if (user_key[0] != '0' || user_key[1] != '0') {
         return printf("Nope.\n");
     }
     
-    char result[8];
+    char result[9];
     result[0] = 'd';
 
     int user_key_index = 2;
