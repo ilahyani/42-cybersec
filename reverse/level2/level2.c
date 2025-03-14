@@ -2,17 +2,27 @@
 #include <string.h>
 #include <stdlib.h>
 
+void no() {
+    puts("Nope.");
+    exit(1);
+}
+
+void ok() {
+    puts("Good job.");
+    exit(1);
+}
+
 int main() {
     
     char user_key[24];
 
     printf("Please enter key: ");
     if (scanf("%23s", user_key) != 1) {
-        return printf("Nope.\n");
+        no();
     }
 
     if (user_key[0] != '0' || user_key[1] != '0') {
-        return printf("Nope.\n");
+        no();
     }
     
     char result[9];
@@ -39,8 +49,8 @@ int main() {
     }
 
     if (strcmp(result, "delabere") == 0) {
-        return printf("Good job.\n");
+        ok();
     }
 
-    return printf("Nope.\n"); 
+    no(); 
 }
