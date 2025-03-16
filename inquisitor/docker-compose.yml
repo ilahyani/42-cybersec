@@ -1,0 +1,31 @@
+services:
+  ftp-server:
+    build: ./ftp_server
+    container_name: ftp_server
+    networks:
+      - inquisitor
+    ports:
+      - "21:21"
+      - "20:20"
+    volumes:
+      - /tmp/ftp-server-volume:/ftp-data
+
+  ftp-client:
+    build: ./ftp_client
+    container_name: ftp_client
+    volumes:
+      - /tmp/ftp-client-volume:/ftp-data
+    networks:
+      - inquisitor
+
+  attacker:
+    build: ./attacker
+    container_name: attacker
+    volumes:
+      - ./inquisitor.py:/app/inquisitor.py
+    networks:
+      - inquisitor
+
+networks:
+  inquisitor:
+    driver: bridge
