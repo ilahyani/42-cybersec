@@ -1,0 +1,59 @@
+services:
+  vulnerable_mysql_app:
+    build: ./tests/mysql
+    volumes:
+      - ./tests/mysql/vulnerable_mysql_db.py:/app/vulnerable_mysql_db.py
+    ports:
+      - "8000:8000"
+    networks:
+      - net
+
+  vulnerable_postgres_app:
+    build: ./tests/postgres
+    depends_on:
+      - postgres_db
+    environment:
+      POSTGRES_DB: vulnerable_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./tests/postgres/vulnerable_postgresql_db.py:/app/vulnerable_postgresql_db.py
+    networks:
+      - net
+
+  postgres_db:
+    image: postgres:14
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: vulnerable_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - /tmp/pg-data:/var/lib/postgresql/data
+    networks:
+      - net
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: vulnerable_app
+      MYSQL_USER: notroot
+      MYSQL_PASSWORD: notpassword
+    volumes:
+      - /tmp/mysql_data:/var/lib/mysql
+    networks:
+      - net
+
+networks:
+  net:
+    name: net
+    driver: bridge
